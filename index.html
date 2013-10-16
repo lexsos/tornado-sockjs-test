@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+</head>
+<body>
+  <input type="text" id="msg"><br>
+  <input type="button" value="Отправить" onclick="send()">
+  <div id="log"></div>
+  <script>
+    var sock = new SockJS('http://127.0.0.1:9999/test');
+
+    sock.onopen = function() {
+       $('#log').append('Connected<br>')
+       sock.send('test msg')
+    };
+
+    sock.onmessage = function(e) {
+       $('#log').append(e.data,'<br>')
+    };
+
+    sock.onclose = function() {
+       $('#log').append('closed<br>')
+    };
+
+    function send(){
+        sock.send($('#msg').attr('value'))
+    }
+  </script>
+</body>
+</html>
